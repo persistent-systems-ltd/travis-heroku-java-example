@@ -1,0 +1,8 @@
+language: java
+
+install: mvn package
+
+env:
+  global:
+    # sets the HEROKU_API_KEY for Heroku deploys
+    - secure: MiKDNvf7zB/7IJohT7OVe7ALtwbZfu2F21VMSzO/DikWCxWIeSqbdx71ysbsaEDRx63RrysYnkNMO9C/5cHxu9U+hkV8R9xFL4MwtMFz2l8be6VHHP3pLgAbDbbS7vb0xaSSYQeKrggGrdiB/0LLtYnaBxYUuEVvmH4XLpMa2eQ=
