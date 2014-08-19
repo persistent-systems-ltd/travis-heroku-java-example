@@ -1,6 +1,6 @@
 language: java
 
-install: mvn package
+script: mvn package
 
 env:
   global:
