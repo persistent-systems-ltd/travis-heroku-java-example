@@ -29,7 +29,7 @@
     <finalName>travis-heroku-java-example</finalName>
     <plugins>
 
-      <plugin>
+      <!-- <plugin>
         <groupId>de.saumya.mojo</groupId>
         <artifactId>gem-maven-plugin</artifactId>
         <executions>
@@ -57,7 +57,7 @@
             <type>gem</type>
           </dependency>
         </dependencies>
-      </plugin>
+      </plugin> -->
 
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
