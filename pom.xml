@@ -28,37 +28,6 @@
   <build>
     <finalName>travis-heroku-java-example</finalName>
     <plugins>
-
-      <!-- <plugin>
-        <groupId>de.saumya.mojo</groupId>
-        <artifactId>gem-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-            <configuration>
-              <execArgs>${project.build.directory}/rubygems/bin/travis encrypt ${travis.encrypt} -r ${travis.repoName}</execArgs>
-            </configuration>
-          </execution>
-        </executions>
-        <dependencies>
-          <dependency>
-            <groupId>rubygems</groupId>
-            <artifactId>travis</artifactId>
-            <version>1.7.1</version>
-            <type>gem</type>
-          </dependency>
-          <dependency>
-            <groupId>rubygems</groupId>
-            <artifactId>pry</artifactId>
-            <version>0.9.12.6</version>
-            <type>gem</type>
-          </dependency>
-        </dependencies>
-      </plugin> -->
-
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>2.3.2</version>
@@ -67,7 +36,6 @@
           <target>1.7</target>
         </configuration>
       </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -89,7 +57,38 @@
             </execution>
           </executions>
         </plugin>
-
     </plugins>
+
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>de.saumya.mojo</groupId>
+          <artifactId>gem-maven-plugin</artifactId>
+          <version>1.0.5</version>
+          <configuration>
+            <execArgLines>
+              <execArgLine>${project.build.directory}/rubygems/bin/travis</execArgLine>
+              <execArgLine>encrypt</execArgLine>
+              <execArgLine>HEROKU_API_KEY=${herokuApiKey}</execArgLine>
+            </execArgLines>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>rubygems</groupId>
+              <artifactId>travis</artifactId>
+              <version>1.7.1</version>
+              <type>gem</type>
+            </dependency>
+            <dependency>
+              <groupId>rubygems</groupId>
+              <artifactId>pry</artifactId>
+              <version>0.9.12.6</version>
+              <type>gem</type>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+
   </build>
 </project>
