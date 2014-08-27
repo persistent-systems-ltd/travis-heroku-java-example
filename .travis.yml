@@ -8,4 +8,4 @@ env:
     - secure: "MiKDNvf7zB/7IJohT7OVe7ALtwbZfu2F21VMSzO/DikWCxWIeSqbdx71ysbsaEDRx63RrysYnkNMO9C/5cHxu9U+hkV8R9xFL4MwtMFz2l8be6VHHP3pLgAbDbbS7vb0xaSSYQeKrggGrdiB/0LLtYnaBxYUuEVvmH4XLpMa2eQ="
 
 after_success:
-  - ./deploy.sh "$HEROKU_API_TOKEN"
+  - ./deploy.sh
