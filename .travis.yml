@@ -8,9 +8,9 @@ env:
     - secure: "MiKDNvf7zB/7IJohT7OVe7ALtwbZfu2F21VMSzO/DikWCxWIeSqbdx71ysbsaEDRx63RrysYnkNMO9C/5cHxu9U+hkV8R9xFL4MwtMFz2l8be6VHHP3pLgAbDbbS7vb0xaSSYQeKrggGrdiB/0LLtYnaBxYUuEVvmH4XLpMa2eQ="
 
 after_success:
-  # create the archive
-  - tar cf app.tar.gz target Procfile
   # Install the Heroku gem (or the Heroku toolbelt)
   - curl --fail --retry 3 --retry-delay 1 --connect-timeout 3 --max-time 30 https://toolbelt.heroku.com/install-ubuntu.sh | sh
+  # create the archive
+  - tar cf app.tar.gz target Procfile
   # Release the new version
   - ./deploy.sh "app.tar.gz" "aqueous-refuge-1495"
