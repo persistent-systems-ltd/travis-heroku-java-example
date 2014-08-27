@@ -5,7 +5,7 @@ echo "---> Creating the release package..."
 tar cvf ${APP_FILE} target/dependency target/*.war Procfile
 
 # create the Auth token
-HK_TOKEN=`(echo -n ":" ; echo "${HEROKU_API_TOKEN}") | base64`
+HK_TOKEN=`(echo -n ":" ; echo "${1:-$HEROKU_API_TOKEN}") | base64`
 
 # retrieve the URLs for putting and getting the archive
 HK_SOURCES=$(curl -s -X POST https://api.heroku.com/apps/${APP_NAME}/sources -H 'Accept: application/vnd.heroku+json; version=3' -H "Authorization: ${HK_TOKEN}")
