@@ -9,7 +9,7 @@ env:
 
 after_success:
   # create the archive
-  - tar cf app-1.0.0.tar.gz target Procfile
+  - tar cf app.tar.gz target Procfile
   # Install the Heroku gem (or the Heroku toolbelt)
   - curl --fail --retry 3 --retry-delay 1 --connect-timeout 3 --max-time 30 https://toolbelt.heroku.com/install-ubuntu.sh | sh
   # Release the new version
