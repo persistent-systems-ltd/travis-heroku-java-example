@@ -5,7 +5,7 @@ script: mvn package
 env:
   global:
     # sets the HEROKU_API_KEY for Heroku deploys
-    - secure: "MiKDNvf7zB/7IJohT7OVe7ALtwbZfu2F21VMSzO/DikWCxWIeSqbdx71ysbsaEDRx63RrysYnkNMO9C/5cHxu9U+hkV8R9xFL4MwtMFz2l8be6VHHP3pLgAbDbbS7vb0xaSSYQeKrggGrdiB/0LLtYnaBxYUuEVvmH4XLpMa2eQ="
+    - secure: "JrPeMkwE/45KjoIi4GYHxFJhnhaYeKFFyJJS0ujK+ccpjDdN4Im2cL2qpGhQT/xcIRyFg+Hz537BkJSPrl1lyRZ9Q7gbNUlRiO3JTgVHw+hBMGtd5fzgtAqiQOgHocEaffA4AO/KwTGJJsYBs7ssZ6z2tyg++UxD6rOOFnmuM5w="
 
 after_success:
   - ./deploy.sh "$HEROKU_API_KEY"
