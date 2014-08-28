@@ -1,26 +1,47 @@
 APP_NAME="rocky-ocean-6373"
-APP_FILE="${APP_NAME}.tar.gz"
 
-echo "---> Creating the release package..."
-tar cvf ${APP_FILE} target/dependency target/*.war Procfile
+rm -rf target/heroku/
+mkdir -p "target/heroku/app/dependency"
+cp target/dependency/* target/heroku/app/dependency
+cp target/*.war target/heroku/app/
+
+JDK_URL="http://heroku-jdk.s3.amazonaws.com/openjdk1.7.0_45.tar.gz"
+
+cd target/heroku
+mkdir -p "app/.jdk"
+curl --silent --location ${JDK_URL} | tar pxz -C app/.jdk
+
+tar czfv slug.tgz ./app
 
 # create the Auth token
 HK_TOKEN=`(echo -n ":" ; echo "${1:-HEROKU_API_KEY}") | base64`
 
-# retrieve the URLs for putting and getting the archive
-HK_SOURCES=$(curl -s -X POST https://api.heroku.com/apps/${APP_NAME}/sources -H 'Accept: application/vnd.heroku+json; version=3' -H "Authorization: ${HK_TOKEN}")
-HK_GET_URL=$(expr "$HK_SOURCES" : ".*\"get_url\":\"\(https://.*\)\",")
-HK_PUT_URL=$(expr "$HK_SOURCES" : ".*\"put_url\":\"\(https://.*\)\"")
-
-echo "---> Uploading release package..."
-curl "$HK_PUT_URL" -X PUT -H 'Content-Type:' --data-binary @${APP_FILE}
-
-echo "---> Creating new release..."
-curl -X POST https://api.heroku.com/apps/${APP_NAME}/builds \
--H "Accept: application/vnd.heroku+json; version=3" \
+echo -n "---> Creating the Slug..."
+HK_SLUG1=$(curl -s -X POST \
+-H 'Content-Type: application/json' \
+-H 'Accept: application/vnd.heroku+json; version=3' \
 -H "Authorization: ${HK_TOKEN}" \
+-d '{"process_types":{"web":"/app/.jdk/bin/java -jar dependency/webapp-runner.jar --port $PORT *.war"}}' \
+https://api.heroku.com/apps/${APP_NAME}/slugs)
+echo " done"
+
+HK_SLUG=$(echo "$HK_SLUG1" | tr -d '\n')
+HK_BLOB_URL=$(expr "$HK_SLUG" : ".*\"url\":\"\(https://.*\)\" *}, *\"buildpack_provided_description")
+HK_SLUG_ID=$(expr "$HK_SLUG" : ".*\"id\":\"\(.*\)\", *\"process_types")
+
+echo -n "---> Uploading the Slug..."
+curl -X PUT \
+-H "Content-Type:" \
+--data-binary @slug.tgz \
+"$HK_BLOB_URL"
+echo " done"
+
+echo "---> Creating the Release..."
+curl -X POST \
+-H "Accept: application/vnd.heroku+json; version=3" \
 -H "Content-Type: application/json" \
--d "{ \"source_blob\": {
-  \"url\": \"${HK_GET_URL}\",
-  \"version\": \"v1.0.0\"
-}}"
+-H "Authorization: ${HK_TOKEN}" \
+-d "{\"slug\":\"${HK_SLUG_ID}\"}" \
+https://api.heroku.com/apps/${APP_NAME}/releases
+
+heroku releases --app ${APP_NAME}
