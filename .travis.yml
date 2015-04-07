@@ -9,3 +9,12 @@ env:
 
 after_success:
   - ./deploy.sh "$HEROKU_API_KEY"
+
+deploy:
+  provider: releases
+  user: "ngundu"
+  password: "india@003"
+  file: "travis-heroku-java-example.war"
+  skip_cleanup: true
+  on:
+    tags: true  
